@@ -1,27 +1,29 @@
 # Driver’s Drowsiness Detection System
 
-A real-time computer vision system to detect driver drowsiness by monitoring eye closure and head tilt using OpenCV and Dlib. The system alerts the driver with a beep sound when signs of drowsiness are detected to improve driving safety.
+A real-time driver monitoring system that detects drowsiness by analyzing eye closure (using Eye Aspect Ratio) and head tilt angle via facial landmarks. When signs of drowsiness or dangerous head tilt are detected, the system sounds an audio alert to wake the driver and enhance road safety.
 
 ***
 
 ## Features
 
-- Real-time face and eye detection with OpenCV and Dlib
-- Eye Aspect Ratio (EAR) calculation to detect eye closure
-- Head tilt detection to identify if the driver is leaning sideways due to drowsiness
-- Immediate audio alert using a `.wav` beep sound
-- Uses pretrained facial landmark model from Dlib
+- Real-time face and eye detection using OpenCV and Dlib  
+- Eye Aspect Ratio (EAR) calculation to detect prolonged eye closure  
+- Head tilt angle calculation to detect if driver is leaning to one side  
+- Audio alert (beep sound) triggered on drowsiness or dangerous head tilt  
+- Visual feedback showing EAR, head tilt angle, and alerts on camera feed  
 
 ***
 
 ## Technologies Used
 
-- Python 3.x
-- OpenCV
-- Dlib
-- shape_predictor_68_face_landmarks.dat (Dlib’s facial landmark model)
-- Pygame / Playsound (for audio alert)
-  
+- Python 3.x  
+- OpenCV  
+- Dlib (with `shape_predictor_68_face_landmarks.dat`)  
+- imutils  
+- numpy  
+- pygame (for audio alert)  
+- scipy  
+
 ***
 
 ## Project Structure
@@ -29,27 +31,27 @@ A real-time computer vision system to detect driver drowsiness by monitoring eye
 ```
 Driver-Drowsiness-Detection/
 │
-├── drowsiness_detection.py         # Main script for drowsiness detection
-├── shape_predictor_68_face_landmarks.dat   # Facial landmarks pretrained model
-├── music.wav                       # Beep audio alert file
-├── README.md                       # Project documentation
-├── requirements.txt                # Python dependencies list
+├── drowsiness_detection.py              # Main detection script
+├── shape_predictor_68_face_landmarks.dat # Facial landmarks model file
+├── music.wav                           # Audio alert beep file
+├── requirements.txt                    # Python dependencies list
+├── README.md                          # Project documentation
 ```
 
 ***
 
 ## Installation & Setup
 
-1. **Clone the repository**  
+1. **Clone repository**  
 ```bash
 git clone https://github.com/your-username/driver-drowsiness-detection.git
 cd driver-drowsiness-detection
 ```
 
-2. **Create a virtual environment (recommended)**  
+2. **Create virtual environment (optional but recommended)**  
 ```bash
 python -m venv venv
-source venv/bin/activate      # On Windows use `venv\Scripts\activate`
+source venv/bin/activate      # On Windows: venv\Scripts\activate
 ```
 
 3. **Install dependencies**  
@@ -57,58 +59,59 @@ source venv/bin/activate      # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
 ```
 
-4. **If not included, download the facial landmark model file**  
-Download `shape_predictor_68_face_landmarks.dat` from the official Dlib model source and place it in the project folder.
+4. **Place the facial landmark model file**  
+Download `shape_predictor_68_face_landmarks.dat` from the official Dlib model source if not included, and place it in the project folder.
+
+5. **Ensure `music.wav` exists in your project folder** for the audio alert sound.
 
 ***
 
 ## Usage
 
-Run the drowsiness detection system with the command:
+Run the detection script:
 
 ```bash
 python drowsiness_detection.py
 ```
 
-- The system will start your webcam and begin monitoring your face in real time.
-- It calculates the Eye Aspect Ratio (EAR) to check if your eyes close beyond a threshold for a sustained time.
-- It also detects if your head tilts sideways indicating drowsiness.
-- On detecting drowsiness, the system plays a beep alert from `alert.wav` to wake you up.
+- The webcam will start capturing video.
+- The system detects facial landmarks to monitor eye aspect ratio and head tilt angle.
+- If eye closure or head tilt exceeds set thresholds for continuous frames, an alert will be shown and an audio beep will play.
+- Press `q` to exit the program.
 
 ***
 
 ## How It Works
 
-- Captures live video from your webcam.
-- Uses Dlib to detect facial landmarks and identify eye and head positions.
-- Calculates EAR to quantify how open your eyes are.
-- Monitors head position for tilt or lean.
-- When drowsiness signs are detected, triggers an audio beep alert.
+- **Eye Aspect Ratio (EAR)** measures the ratio of distances between eye landmarks to detect blinking or eye closure.  
+- **Head Tilt Angle** calculates the angle between nose and chin points; excessive tilt indicates drowsiness-related head lean.  
+- If EAR falls below 0.25 for 20 consecutive frames or head tilt angle exceeds 15 degrees for 20 frames, an alert sounds.  
+- OpenCV displays the video feed with contours on eyes, current head tilt angle, and warning messages when triggered.
 
 ***
 
-## Dependencies (requirements.txt example)
+## Dependencies (`requirements.txt`)
 
 ```
-opencv-python
-dlib
-numpy
-pygame
+opencv-python==4.7.0.72
+dlib==19.24.0
+numpy==1.24.3
+pygame==2.1.3
+imutils==0.5.4
+scipy==1.11.1
 ```
 
 ***
 
 ## Future Enhancements
 
-- Add yawning detection using mouth aspect ratio.
-- Integrate with vehicle systems for broader safety alerts.
-- Use deep learning models for improved accuracy.
-- Mobile and embedded system compatibility.
+- Add mouth aspect ratio to detect yawning.  
+- Use deep learning for improved detection accuracy.  
+- Integrate with vehicle control systems for automatic responses.  
+- Mobile deployment with camera integration for driver monitoring.
 
 ***
 
 ## License
 
-This project is for educational and research purposes. Feel free to modify and use it with appropriate credit.
-[9](https://www.youtube.com/watch?v=SIZNf_Ydplg)
-[10](https://hda10196.h-da.io/face-image-quality-toolkit/source/readme.html)
+This project is open for educational and research use. Please give credit if you use or modify this work.
